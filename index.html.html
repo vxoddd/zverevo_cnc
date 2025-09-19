@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3DPlast - изделия из пластика на 3D принтере</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--secondary);
+            color: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        .cart-icon {
+            background-color: var(--primary);
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://placehold.co/1200x600/2c3e50/ecf0f1?text=3D+Печать') no-repeat center center/cover;
+            color: white;
+            padding: 5rem 1rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: #c0392b;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin: 3rem 0 2rem;
+            color: var(--secondary);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .product-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 1rem;
+        }
+        
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-price {
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .product-description {
+            margin-bottom: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .about {
+            background-color: var(--light);
+            padding: 3rem 1rem;
+        }
+        
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .contact {
+            padding: 3rem 1rem;
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="#" class="logo">3D<span>Plast</span></a>
+            <nav>
+                <ul>
+                    <li><a href="#">Главная</a></li>
+                    <li><a href="#products">Товары</a></li>
+                    <li><a href="#about">О нас</a></li>
+                    <li><a href="#contact">Контакты</a></li>
+                </ul>
+            </nav>
+            <div class="cart-icon">
+                🛒
+                <span class="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Уникальные изделия из пластика на 3D принтере</h1>
+            <p>Мы создаем качественные и доступные изделия по индивидуальным заказам и готовым моделям. От сувениров до функциональных деталей.</p>
+            <a href="#products" class="btn">Смотреть каталог</a>
+        </div>
+    </section>
+
+    <section id="products" class="container">
+        <h2 class="section-title">Наши товары</h2>
+        <div class="products">
+            <div class="product-card">
+                <img src="https://placehold.co/300x200/3498db/ffffff?text=Сувениры" alt="Сувениры" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Сувениры и фигурки</h3>
+                    <p class="product-price">от 500 руб.</p>
+                    <p class="product-description">Индивидуальные фигурки, статуэтки и сувениры на заказ.</p>
+                    <button class="btn">В корзину</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <img src="https://placehold.co/300x200/e74c3c/ffffff?text=Аксессуары" alt="Аксессуары" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Аксессуары</h3>
+                    <p class="product-price">от 300 руб.</p>
+                    <p class="product-description">Чехлы, подставки, держатели и другие полезные мелочи.</p>
+                    <button class="btn">В корзину</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <img src="https://placehold.co/300x200/2ecc71/ffffff?text=Детали" alt="Технические детали" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Технические детали</h3>
+                    <p class="product-price">от 800 руб.</p>
+                    <p class="product-description">Функциональные детали для техники, механизмов и приборов.</p>
+                    <button class="btn">В корзину</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <img src="https://placehold.co/300x200/9b59b6/ffffff?text=Интерьер" alt="Интерьер" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Элементы интерьера</h3>
+                    <p class="product-price">от 1000 руб.</p>
+                    <p class="product-description">Уникальные детали декора для вашего дома или офиса.</p>
+                    <button class="btn">В корзину</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">О нашей компании</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Мы - команда энтузиастов 3D-печати, которая превратила хобби в профессиональное дело. Начав с небольшого принтера в гараже, мы выросли в полноценную мастерскую с современным оборудованием.</p>
+                    <p>Используем только качественные материалы: PLA, ABS, PETG и другие виды пластиков. Каждое изделие проходит контроль качества перед отправкой клиенту.</p>
+                    <p>Мы принимаем индивидуальные заказы и готовы воплотить в жизнь ваши идеи - от простых брелоков до сложных технических деталей.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://placehold.co/500x300/34495e/ecf0f1?text=Наша+мастерская" alt="Наша мастерская">
+                </div>
+            </div>
+            
+            <h3 class="section-title">Наши преимущества</h3>
+            <div class="features">
+                <div class="feature">
+                    <i>⚡</i>
+                    <h3>Быстрое производство</h3>
+                    <p>Большинство заказов выполняем в течение 1-3 дней</p>
+                </div>
+                <div class="feature">
+                    <i>💯</i>
+                    <h3>Контроль качества</h3>
+                    <p>Каждое изделие проверяется перед отправкой</p>
+                </div>
+                <div class="feature">
+                    <i>🔄</i>
+                    <h3>Разные материалы</h3>
+                    <p>Работаем с PLA, ABS, PETG, нейлоном и другими материалами</p>
+                </div>
+                <div class="feature">
+                    <i>🎨</i>
+                    <h3>Разнообразие цветов</h3>
+                    <p>Широкая палитра цветов для реализации ваших идей</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Свяжитесь с нами</h2>
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">Ваше имя</label>
+                    <input type="text" id="name" placeholder="Иван Иванов" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="example@mail.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Сообщение</label>
+                    <textarea id="message" rows="5" placeholder="Расскажите о вашем проекте или задайте вопрос" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-accent">Отправить сообщение</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>3DPlast</h3>
+                    <p>Качественные изделия из пластика на 3D принтере</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <p>Email: info@3dplast.ru</p>
+                    <p>Телефон: +7 (999) 123-45-67</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Мы в соцсетях</h3>
+                    <p>VK | Telegram | Instagram</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 3DPlast. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Простая функциональность корзины
+        document.querySelectorAll('.product-card .btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const countElement = document.querySelector('.cart-count');
+                let count = parseInt(countElement.textContent);
+                count++;
+                countElement.textContent = count;
+                
+                // Можно добавить анимацию
+                this.textContent = 'Добавлено!';
+                setTimeout(() => {
+                    this.textContent = 'В корзину';
+                }, 1500);
+            });
+        });
+        
+        // Обработка формы
+        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
